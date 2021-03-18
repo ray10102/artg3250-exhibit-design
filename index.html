@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>ARTG3250 Ambient Display</title>
+    <meta charset="utf-8">
+    <meta name="ambient-display" content="ARTG3250-ambient-display-project">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        // Redirect to HTTPS if HTTP is requested.
+        if (window.location.protocol === 'http:') {
+            window.location.href = 'https:' + window.location.href.substring(5);
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="js/serialScript.js" defer></script>
+    <script src="js/graphScript.js" defer></script>
+    <script src="js/mainController.js" defer></script>
+    <script src="js/distanceScript.js" defer></script>
+    <script src="js/timerScript.js" defer></script>
+    <script src="js/exampleGraph.js" defer></script>
+</head>
+
+<body>
+    <header class="header">
+        <div>How fast does global temperature change?</div>
+        <div id="sensor-reading">Sensor Reading</div>
+        <!-- Connect/Disconnect button -->
+        <button class="notConnected" id="butConnect" type="button">Connect</button>
+    </header>
+    <main class="main">
+        <!-- Web Serial Feature Support UI -->
+        <div id="notSupported" class="hidden">
+            Sorry, <b>Web Serial</b> is not supported on this device, make sure you're
+            running Chrome 78 or later and have enabled the
+            <code>#enable-experimental-web-platform-features</code> flag in
+            <code>chrome://flags</code>
+        </div>
+        <div id="exhibitInfo">
+            <div class="infoContainer">
+                <div class="exhibitParagraph">
+                    This exhibit explores the speed of global temperature change during different periods of Earth’s
+                    history. You’ll be inching, walking, or running a distance based on the total temperature change over a
+                    certain amount of time.
+                </div>
+                <div class="exhibitParagraph">
+                    Every 16 inches marked on the ground represents a 0.2°C change in temperature. Each second represents
+                    100 years.
+                </div>
+                <div class="exhibitParagraph">
+                    A graph will help you visualize the actual temperature change (blue) and a line of best fit (red). In the first round, try to match your pace (orange) with the expected one.
+                </div>
+                <div class="exhibitParagraph">
+                    A countdown will show you how much time you have left. Try to pace yourself!
+                </div>
+                <div id="sampleViz"></div>
+            </div>
+            <!-- Selection Options -->
+            <div class="buttonContainer">
+                <button class="eraSelector" id="selector1" type="button">
+                    <div class="dateRange">13,500 BC to 12,700 BC</div>
+                    <div class="periodName">Younger Dryas</div>
+                </button>
+                <button class="eraSelector" id="selector2" type="button">
+                    <div class="dateRange">12,700 BC to 9400 BC</div>
+                    <div class="periodName">Post-glacial Warming</div>
+                </button>
+                <button class="eraSelector" id="selector3" type="button">
+                    <div class="dateRange">1000 to 1760</div>
+                    <div class="periodName">Early Medieval to Industrial Era</div>
+                </button>
+                <button class="eraSelector" id="selector4" type="button">
+                    <div class="dateRange">1880 to 2014</div>
+                    <div class="periodName">Industrial to Modern Era</div>
+                </button>
+            </div>
+        </div>
+        <!-- Graph -->
+        <div id="my_dataviz"></div>
+        <div id="ready"></div>
+        <!-- Countdown Timer -->
+        <div class="base-timer hidden">
+            <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <g class="base-timer__circle">
+                    <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+                    <path id="base-timer-path-remaining" stroke-dasharray="283"
+                        class="base-timer__path-remaining" d="M 50, 50
+                        m -45, 0
+                        a 45,45 0 1,0 90,0
+                        a 45,45 0 1,0 -90,0">
+                    </path>
+                </g>
+            </svg>
+            <span id="base-timer-label" class="base-timer__label">
+            </span>
+        </div>
+        <div class="backContainer">
+            <button class="backButtons" id="tryAgain" type="button">
+                Try Again
+            </button>
+            <button class="backButtons" id="backToMain" type="button">
+                Back
+            </button>
+        </div>
+        <pre id="log" class="hidden"></pre>
+    </main>
+</body>
+
+</html>
